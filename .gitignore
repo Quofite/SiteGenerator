@@ -1,0 +1,8 @@
+/.git
+/target
+mvnw
+mvnw.cmd
+/.idea
+/.mvn/wrapper/maven-wrapper.jar
+/src/test
+/src/main/resources/application.properties

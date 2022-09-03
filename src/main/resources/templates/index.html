@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <title>Site Generator</title>
+</head>
+<body>
+    <div th:insert="partials/header"></div>
+
+    <div class="mt-5 container" style="border: 1px solid black; height: 500px;" id="main_content">
+        <!-- блок с основным контентом (т.е. страница, которую делает пользователь)
+        
+            пока тут ничего нет, но оно и понятно
+        -->
+    </div>
+
+    <div class="mt-2 container"><button class="btn btn-success" id="done">Скачать страницу</button></div>
+
+</body>
+
+<script>
+    document.getElementById("done").addEventListener("click", (e) => {
+        /*  
+            1) получим данные о том, что происходит в main_content 
+            2) запишем все в json файл
+            3) отправим на сервак
+            4) сервак сгенерирует html страницу и вернет ее в качестве файла
+        */
+
+        let siteData = JSON.stringify(
+            {
+                /* "место на сайте": {
+                    "что выбрал пользователь": "элемент",
+                    "текст в элементе": "текст"
+                }
+
+                /* "место на сайте 2": {
+                    "что выбрал пользователь": "элемент",
+                    "текст в элементе": "текст"
+                }
+
+
+                и так далее, делать эту тему буду последней
+
+                */
+            }
+        );
+
+        let request = new XMLHttpRequest();
+        request.open("POST", "/generate", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.send(siteData);
+
+
+    });
+
+
+
+</script>
+
+</html>
