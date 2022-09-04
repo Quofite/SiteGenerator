@@ -17,8 +17,14 @@
         -->
     </div>
 
-    <div class="mt-2 container"><button class="btn btn-success" id="done">Скачать страницу</button></div>
+    <div class="mt-2 container">
+        <div class="row">
+            <div class="col"><button class="btn btn-success" id="done">Скачать страницу</button></div>
+            <div class="col"><button class="btn btn-success" id="save">Сохранить страницу</button></div>
+            <div class="col"><form method="post" action="/logout"><input class="btn btn-success" type="submit" value="Выйти из аккаунта"></form></div>
+        </div>
 
+    </div> 
 </body>
 
 <script>
@@ -57,7 +63,38 @@
 
     });
 
+    document.getElementById("done").addEventListener("click", (e) => {
+        /*  
+            1) получим данные о том, что происходит в main_content 
+            2) запишем все в json файл
+            3) отправим на сервак
+            4) сервак сохранит эти данные на аккаунте
+        */
 
+        let siteData = JSON.stringify(
+            {
+                /* "место на сайте": {
+                    "что выбрал пользователь": "элемент",
+                    "текст в элементе": "текст"
+                }
+
+                /* "место на сайте 2": {
+                    "что выбрал пользователь": "элемент",
+                    "текст в элементе": "текст"
+                }
+
+
+                и так далее, делать эту тему буду последней
+
+                */
+            }
+        );
+
+        let request = new XMLHttpRequest();
+        request.open("POST", "/save", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.send(siteData);
+    });
 
 </script>
 
