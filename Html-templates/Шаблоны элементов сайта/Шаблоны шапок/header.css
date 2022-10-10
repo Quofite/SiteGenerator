@@ -1,5 +1,9 @@
+/*
+Введите требуемую высоту вашего изображения(height).
+Укажите путь к вашему изображению
+*/
 header {
  display: block;
- height: 405px;
+ height: #;
  background: url(#) repeat-x center bottom;
 }
