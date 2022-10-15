@@ -10,90 +10,109 @@
 <body>
     <div th:insert="partials/header"></div>
 
-    <div class="mt-5 container" style="border: 1px solid black; height: 500px;" id="main_content">
-        <!-- блок с основным контентом (т.е. страница, которую делает пользователь)
-        
-            пока тут ничего нет, но оно и понятно
-        -->
+    <div class="mt-5 container" style="border: 1px solid black; height: 560px;" id="main_content">
+        <div id="header_block" style="border: 1px solid black; height: 60px; width: 102%; margin-left: -1%;">
+            
+        </div>
+
+        <div id="main_block" style="border: 1px solid black; height: 400px; width: 70%; margin-left: -1%;">
+            
+        </div>
+
+        <div id="right_block" style="border: 1px solid black; height: 400px; width: 31%; margin-left: 70%; margin-top: -400px;">
+            
+        </div>
+
+        <div id="footer_block" style="border: 1px solid black; height: 100px; width: 102%; margin-left: -1%;">
+            
+        </div>
     </div>
 
     <div class="mt-2 container">
         <div class="row">
             <div class="col"><button class="btn btn-success" id="done">Скачать страницу</button></div>
             <div class="col"><button class="btn btn-success" id="save">Сохранить страницу</button></div>
-            <div class="col"><form method="post" action="/logout"><input class="btn btn-success" type="submit" value="Выйти из аккаунта"></form></div>
+
         </div>
 
+        <div>
+            <h2>Шапки</h2>
+            <button id="header_1" class="btn btn-primary">Шапка Черная</button>
+            <button id="header_2" class="btn btn-primary">Шапка Белая</button>
+        </div>
+        <hr>
+        <div>
+            <h2>Футеры</h2>
+            <button id="footer_1" class="btn btn-primary">Футер 1</button>
+            <button id="footer_2" class="btn btn-primary">Футер 2</button>
+        </div>
     </div> 
 </body>
 
 <script>
     document.getElementById("done").addEventListener("click", (e) => {
-        /*  
-            1) получим данные о том, что происходит в main_content 
-            2) запишем все в json файл
-            3) отправим на сервак
-            4) сервак сгенерирует html страницу и вернет ее в качестве файла
+        
+
+        /* 
+        
+            тут произойдет переход на POST /generator со всей той дребуденью, которая была записана ранее
+
+            там сервак по ней уже сгененирует html файл
+        
         */
-
-        let siteData = JSON.stringify(
-            {
-                /* "место на сайте": {
-                    "что выбрал пользователь": "элемент",
-                    "текст в элементе": "текст"
-                }
-
-                /* "место на сайте 2": {
-                    "что выбрал пользователь": "элемент",
-                    "текст в элементе": "текст"
-                }
-
-
-                и так далее, делать эту тему буду последней
-
-                */
-            }
-        );
-
-        let request = new XMLHttpRequest();
-        request.open("POST", "/generate", true);
-        request.setRequestHeader("Content-Type", "application/json");
-        request.send(siteData);
 
 
     });
 
-    document.getElementById("done").addEventListener("click", (e) => {
-        /*  
-            1) получим данные о том, что происходит в main_content 
-            2) запишем все в json файл
-            3) отправим на сервак
-            4) сервак сохранит эти данные на аккаунте
-        */
-
-        let siteData = JSON.stringify(
-            {
-                /* "место на сайте": {
-                    "что выбрал пользователь": "элемент",
-                    "текст в элементе": "текст"
-                }
-
-                /* "место на сайте 2": {
-                    "что выбрал пользователь": "элемент",
-                    "текст в элементе": "текст"
-                }
+    let header = "";
+    let footer = "";
 
 
-                и так далее, делать эту тему буду последней
+    document.getElementById("header_1").addEventListener("click", (e) => {
+        document.getElementById("header_block").innerHTML = `<header class="p-3 bg-dark text-white">
+                <div class="container">
+                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
+                </a>
 
-                */
-            }
-        );
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li>Пример текста</li>
+                </ul>
+                </div>
+                </div>
+                </header>`;
+        
+        header = "1";
+    });
 
-        let request = new XMLHttpRequest();
-        request.open("POST", "/save", true);
-        request.setRequestHeader("Content-Type", "application/json");
-        request.send(siteData);
+    document.getElementById("header_2").addEventListener("click", (e) => {
+        document.getElementById("header_block").innerHTML = `<header class="d-flex justify-content-center py-3">
+      <ul class="nav nav-pills">
+        <li class="nav-item"><a class="nav-link" aria-current="page">Кнопка</a></li>
+        <li class="nav-item"><a class="nav-link">Кнопка))0)</a></li>
+        <li class="nav-item"><a class="nav-link">Кнопка еще</a></li>
+        <li class="nav-item"><a class="nav-link">Кнопка оаоаоаоа</a></li>
+        <li class="nav-item"><a class="nav-link">Knopka</a></li>
+        </ul>
+        </header>`;
+        header = "2";
+    });
+
+    document.getElementById("footer_1").addEventListener("click", (e) => {
+        document.getElementById("footer_block").innerHTML = `<footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+        <p class="col-md-4 mb-0 text-muted">© 2022 Company, Inc</p>
+        </footer>`;
+        footer = "1";
+    });
+
+    document.getElementById("footer_2").addEventListener("click", (e) => {
+        document.getElementById("footer_block").innerHTML = `<div class="container">
+        <footer class="py-3 my-4">
+        <p class="text-center text-muted">© 2022 Company, Inc</p>
+        </footer>
+        </div>`;
+        footer = "2";
     });
 
 </script>
