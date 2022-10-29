@@ -50,19 +50,7 @@
 </body>
 
 <script>
-    document.getElementById("done").addEventListener("click", (e) => {
-        
-
-        /* 
-        
-            тут произойдет переход на POST /generator со всей той дребуденью, которая была записана ранее
-
-            там сервак по ней уже сгененирует html файл
-        
-        */
-
-
-    });
+    
 
     let header = "";
     let footer = "";
@@ -113,6 +101,36 @@
         </footer>
         </div>`;
         footer = "2";
+    });
+
+
+
+
+    document.getElementById("done").addEventListener("click", (e) => {
+        
+
+        /* 
+        
+            тут произойдет переход на POST /generator со всей той дребуденью, которая была записана ранее
+
+            там сервак по ней уже сгененирует html файл
+        
+        */
+
+
+
+        var json = JSON.stringify({
+            "header" : header,
+            "footer" : footer
+        });
+
+        var request = new XMLHttpRequest();
+        request.open("POST", "/generate", true);
+        request.setRequestHeader("Content-Type", "application/json");
+
+        request.send(json);
+
+
     });
 
 </script>

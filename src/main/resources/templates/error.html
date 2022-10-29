@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+</head>
+<body>
+    <p th:text="${error-message}"> </p>
+
+    <button id="back">Go back</button>
+</body>
+
+<script>
+    document.getElementById("back").addEventListener("click", (e) => {
+        history.back();
+    });
+
+</script>
+</html>
