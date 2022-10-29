@@ -28,8 +28,9 @@ public class MainController {
         if (page != null) {
             String headerType = page.header;
             String footerType = page.footer;
+            String siteName = page.siteName;
 
-            String filePath = "/home/gleb/Downloads/example.html";
+            String filePath = "/home/gleb/Downloads/" + siteName + ".html";
 
             String siteHeader = "<!DOCTYPE html>\n" +
                     "<html xmlns:th=\"http://www.thymeleaf.org\">\n" +
@@ -38,7 +39,7 @@ public class MainController {
                     "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n" +
                     "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
                     "    <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css\" rel=\"stylesheet\" integrity=\"sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx\" crossorigin=\"anonymous\">\n" +
-                    "    <title>Site Generator</title>\n" +
+                    "    <title>" + siteName + "</title>\n" +
                     "</head>\n" +
                     "<body>";
 
@@ -60,7 +61,7 @@ public class MainController {
                         "                </a>\n" +
                         "\n" +
                         "                <ul class=\"nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0\">\n" +
-                        "                <li>Пример текста</li>\n" +
+                        "                <li>" + siteName + "</li>\n" +
                         "                </ul>\n" +
                         "                </div>\n" +
                         "                </div>\n" +
@@ -89,7 +90,7 @@ public class MainController {
 
             if(footerType.equals("1")) {
                 String element = "<footer class=\"d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top\">\n" +
-                        "        <p class=\"col-md-4 mb-0 text-muted\">© 2022 Company, Inc</p>\n" +
+                        "        <p class=\"col-md-4 mb-0 text-muted\">© 2022 " + siteName + "</p>\n" +
                         "        </footer>";
 
                 if(!FileWriter.writeFile(element, filePath)) {
@@ -98,7 +99,7 @@ public class MainController {
             } else if (footerType.equals("2")) {
                 String element = "<div class=\"container\">\n" +
                         "        <footer class=\"py-3 my-4\">\n" +
-                        "        <p class=\"text-center text-muted\">© 2022 Company, Inc</p>\n" +
+                        "        <p class=\"text-center text-muted\">© 2022 " + siteName + "</p>\n" +
                         "        </footer>\n" +
                         "        </div>";
 
@@ -116,6 +117,6 @@ public class MainController {
             return "error";
         }
 
-        return "redirect:/index";
+        return "redirect:/";
     }
 }

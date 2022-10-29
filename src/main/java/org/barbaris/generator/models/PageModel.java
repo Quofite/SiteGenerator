@@ -5,4 +5,5 @@ public class PageModel {
 
     public String header;
     public String footer;
+    public String siteName;
 }
