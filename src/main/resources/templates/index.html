@@ -10,12 +10,16 @@
 <body>
     <div th:insert="partials/header"></div>
 
+    <div class="mt-5 container">
+        <textarea placeholder="Название сайта" class="form-control" id="header_text" rows="1"></textarea>
+    </div>
+
     <div class="mt-5 container" style="border: 1px solid black; height: 560px;" id="main_content">
         <div id="header_block" style="border: 1px solid black; height: 60px; width: 102%; margin-left: -1%;">
             
         </div>
 
-        <div id="main_block" style="border: 1px solid black; height: 400px; width: 70%; margin-left: -1%;">
+        <div id="left_block" style="border: 1px solid black; height: 400px; width: 70%; margin-left: -1%;">
             
         </div>
 
@@ -30,16 +34,38 @@
 
     <div class="mt-2 container">
         <div class="row">
-            <div class="col"><button class="btn btn-success" id="done">Скачать страницу</button></div>
+            <div class="col"><button class="btn btn-success" id="done">Сгенерировать страницу</button></div>
+            <div class="col"><button class="btn btn-success" id="download">Скачать страницу</button></div>
             <div class="col"><button class="btn btn-success" id="save">Сохранить страницу</button></div>
-
         </div>
 
+        <div>
+            <h2>Текст</h2>
+            <textarea class="form-control" rows="4" placeholder="Добавить текст..." id="added_text"></textarea><br>
+            
+            <form>
+                <input type="radio" value="add" name="appending" id="add" checked> Добавить к предыдущему
+                <input type="radio" value="new" name="appending" id="new"> Новый абзац
+            </form>
+
+            <form>
+                <input type="checkbox" id="heading"> Заголовок
+                <input type="checkbox" id="sentence"> Отдельное предложение
+            </form>
+
+            <form>
+                <input type="radio" value="left" id="leftTextPos" name="placement" checked> Левый
+                <input type="radio" value="right" id="rightTextPos" name="placement"> Правый
+            </form>
+
+            <button class="btn btn-primary" id="text">Добавить</button>
+            <button class="btn btn-secondary" id="editLastText">Изменить последнее вхождение</button>
+        </div>
+        <hr>
         <div>
             <h2>Шапки</h2>
             <button id="header_1" class="btn btn-primary">Шапка Черная</button>
             <button id="header_2" class="btn btn-primary">Шапка Белая</button><br>
-            <textarea placeholder="Название сайта" class="form-control" id="header_text" rows="1"></textarea>
         </div>
         <hr>
         <div>
@@ -50,92 +76,6 @@
     </div> 
 </body>
 
-<script>
-    
-
-    let header = "";
-    let footer = "";
-    let site_name = "";
-
-
-    document.getElementById("header_1").addEventListener("click", (e) => {
-        document.getElementById("header_block").innerHTML = `<header class="p-3 bg-dark text-white">
-                <div class="container">
-                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
-                </a>
-
-                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li>Пример текста</li>
-                </ul>
-                </div>
-                </div>
-                </header>`;
-        
-        header = "1";
-    });
-
-    document.getElementById("header_2").addEventListener("click", (e) => {
-        document.getElementById("header_block").innerHTML = `<header class="d-flex justify-content-center py-3">
-      <ul class="nav nav-pills">
-        <li class="nav-item"><a class="nav-link" aria-current="page">Кнопка</a></li>
-        <li class="nav-item"><a class="nav-link">Кнопка))0)</a></li>
-        <li class="nav-item"><a class="nav-link">Кнопка еще</a></li>
-        <li class="nav-item"><a class="nav-link">Кнопка оаоаоаоа</a></li>
-        <li class="nav-item"><a class="nav-link">Knopka</a></li>
-        </ul>
-        </header>`;
-        header = "2";
-    });
-
-    document.getElementById("footer_1").addEventListener("click", (e) => {
-        document.getElementById("footer_block").innerHTML = `<footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-        <p class="col-md-4 mb-0 text-muted">© 2022 Company, Inc</p>
-        </footer>`;
-        footer = "1";
-    });
-
-    document.getElementById("footer_2").addEventListener("click", (e) => {
-        document.getElementById("footer_block").innerHTML = `<div class="container">
-        <footer class="py-3 my-4">
-        <p class="text-center text-muted">© 2022 Company, Inc</p>
-        </footer>
-        </div>`;
-        footer = "2";
-    });
-
-
-
-
-    document.getElementById("done").addEventListener("click", (e) => {
-        
-
-        /* 
-        
-            тут произойдет переход на POST /generator со всей той дребуденью, которая была записана ранее
-
-            там сервак по ней уже сгененирует html файл
-        
-        */
-
-        site_name = document.getElementById("header_text").value;
-
-        var json = JSON.stringify({
-            "header" : header,
-            "footer" : footer,
-            "siteName" : site_name
-        });
-
-        var request = new XMLHttpRequest();
-        request.open("POST", "/generate", true);
-        request.setRequestHeader("Content-Type", "application/json");
-
-        request.send(json);
-
-
-    });
-
-</script>
+<script src="script.js"> </script>
 
 </html>

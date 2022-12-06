@@ -1,11 +1,16 @@
 package org.barbaris.generator.controllers;
 
+import org.barbaris.generator.models.HtmlTemplates;
 import org.barbaris.generator.models.PageModel;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
 
@@ -15,108 +20,85 @@ public class MainController {
     public String index(Model model) {
         return "index";
     }
-    @PostMapping("/generate")
-    public String generation(Model model, @RequestBody PageModel page) {
-        File file = new File("/home/gleb/Downloads/example.html");
-        if(file.delete()) {
-            System.out.println("Deleted");
+
+    @GetMapping("/downloadpage")
+    public String downloadPage(Model model) {
+        return "download";
+    }
+
+    @GetMapping("/download/{filename}")
+    public ResponseEntity download(Model model, @PathVariable("filename") String fileName) {
+        // скачивание файла пользователем
+        try {
+            File file = new File("/home/gleb/Documents/GeneratedFiles/" + fileName + ".html");
+            InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+
+            HttpHeaders headers = new HttpHeaders();
+            System.out.println(file.getAbsolutePath());
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getAbsolutePath());
+            headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+            headers.add("Pragma", "no-cache");
+            headers.add("Expires", "0");
+
+            return ResponseEntity.ok().headers(headers).contentLength(file.length()).contentType(MediaType.TEXT_HTML).body(resource);
+        } catch(FileNotFoundException ex) {
+            return (ResponseEntity) ResponseEntity.notFound();
         }
+    }
 
-
-        String response = "";
-
+    @PostMapping("/generate")
+    public String generation(@RequestBody PageModel page) {
         if (page != null) {
+            // генерация файла
+
             String headerType = page.header;
             String footerType = page.footer;
             String siteName = page.siteName;
 
-            String filePath = "/home/gleb/Downloads/" + siteName + ".html";
-
-            String siteHeader = "<!DOCTYPE html>\n" +
-                    "<html xmlns:th=\"http://www.thymeleaf.org\">\n" +
-                    "<head>\n" +
-                    "    <meta charset=\"UTF-8\">\n" +
-                    "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n" +
-                    "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
-                    "    <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css\" rel=\"stylesheet\" integrity=\"sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx\" crossorigin=\"anonymous\">\n" +
-                    "    <title>" + siteName + "</title>\n" +
-                    "</head>\n" +
-                    "<body>";
+            String filePath = "/home/gleb/Documents/GeneratedFiles/" + siteName + ".html";
 
             try(FileOutputStream fos = new FileOutputStream(filePath)) {
-                byte[] buffer = siteHeader.getBytes();
+                byte[] buffer = HtmlTemplates.siteHeader(siteName).getBytes();
                 fos.write(buffer, 0, buffer.length);
             }
             catch (IOException ex) {
                 System.out.println(ex.getMessage());
             }
 
+            // ------------------- ШАПКИ
 
             if(headerType.equals("1")) {
-                String element = "<header class=\"p-3 bg-dark text-white\">\n" +
-                        "                <div class=\"container\">\n" +
-                        "                <div class=\"d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start\">\n" +
-                        "                <a href=\"/\" class=\"d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none\">\n" +
-                        "                <svg class=\"bi me-2\" width=\"40\" height=\"32\" role=\"img\" aria-label=\"Bootstrap\"><use xlink:href=\"#bootstrap\"></use></svg>\n" +
-                        "                </a>\n" +
-                        "\n" +
-                        "                <ul class=\"nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0\">\n" +
-                        "                <li>" + siteName + "</li>\n" +
-                        "                </ul>\n" +
-                        "                </div>\n" +
-                        "                </div>\n" +
-                        "                </header>";
 
-                if(!FileWriter.writeFile(element, filePath)) {
-                    response = "Could not create file";
+                if(!FileWriter.writeFile(HtmlTemplates.header1(siteName), filePath)) {
+                    return "error";
                 }
             } else if (headerType.equals("2")) {
-                String element = "<header class=\"d-flex justify-content-center py-3\">\n" +
-                        "      <ul class=\"nav nav-pills\">\n" +
-                        "        <li class=\"nav-item\"><a class=\"nav-link\" aria-current=\"page\">Кнопка</a></li>\n" +
-                        "        <li class=\"nav-item\"><a class=\"nav-link\">Кнопка))0)</a></li>\n" +
-                        "        <li class=\"nav-item\"><a class=\"nav-link\">Кнопка еще</a></li>\n" +
-                        "        <li class=\"nav-item\"><a class=\"nav-link\">Кнопка оаоаоаоа</a></li>\n" +
-                        "        <li class=\"nav-item\"><a class=\"nav-link\">Knopka</a></li>\n" +
-                        "        </ul>\n" +
-                        "        </header>";
 
-                if(!FileWriter.writeFile(element, filePath)) {
-                    response = "Could not create file";
+                if(!FileWriter.writeFile(HtmlTemplates.header2(), filePath)) {
+                    return "error";
                 }
             }
 
-
+            // -------------------- ФУТЕРЫ
 
             if(footerType.equals("1")) {
-                String element = "<footer class=\"d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top\">\n" +
-                        "        <p class=\"col-md-4 mb-0 text-muted\">© 2022 " + siteName + "</p>\n" +
-                        "        </footer>";
-
-                if(!FileWriter.writeFile(element, filePath)) {
-                    response = "Could not create file";
+                if(!FileWriter.writeFile(HtmlTemplates.footer1(siteName), filePath)) {
+                    return "error";
                 }
             } else if (footerType.equals("2")) {
-                String element = "<div class=\"container\">\n" +
-                        "        <footer class=\"py-3 my-4\">\n" +
-                        "        <p class=\"text-center text-muted\">© 2022 " + siteName + "</p>\n" +
-                        "        </footer>\n" +
-                        "        </div>";
-
-                if(!FileWriter.writeFile(element, filePath)) {
-                    response = "Could not create file";
+                if(!FileWriter.writeFile(HtmlTemplates.footer2(siteName), filePath)) {
+                    return "error";
                 }
             }
 
-            String pageEnd = "</body></html>";
-            FileWriter.writeFile(pageEnd, filePath);
-        }
 
-        if(!response.equals("")) {
-            model.addAttribute("error-message", response);
+            // ----------------------
+
+            FileWriter.writeFile(HtmlTemplates.pageEnd(), filePath);
+
+            return "index";
+        } else {
             return "error";
         }
-
-        return "redirect:/";
     }
 }
