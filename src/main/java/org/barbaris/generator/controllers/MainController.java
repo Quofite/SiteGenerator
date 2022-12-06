@@ -21,11 +21,6 @@ public class MainController {
         return "index";
     }
 
-    @GetMapping("/downloadpage")
-    public String downloadPage(Model model) {
-        return "download";
-    }
-
     @GetMapping("/download/{filename}")
     public ResponseEntity download(Model model, @PathVariable("filename") String fileName) {
         // скачивание файла пользователем
