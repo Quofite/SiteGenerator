@@ -125,11 +125,16 @@ document.getElementById("footer_2").addEventListener("click", (e) => {
 document.getElementById("done").addEventListener("click", (e) => {
 
     site_name = document.getElementById("header_text").value;
+    let left_content = document.getElementById("left_block").innerHTML;
+    let right_content = document.getElementById("right_block").innerHTML;
+
 
     var json = JSON.stringify({
         "header" : header,
         "footer" : footer,
-        "siteName" : site_name
+        "siteName" : site_name,
+        "leftContent" : left_content,
+        "rightContent" : right_content
     });
 
     var request = new XMLHttpRequest();

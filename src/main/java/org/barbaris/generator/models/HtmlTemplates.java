@@ -27,6 +27,14 @@ public class HtmlTemplates {
                 "<body>";
     }
 
+    public static String contentBlock(String rightContent, String leftContent) {
+
+        return "<div class=\"row\">" +
+                    "<div class=\"col-7\">" + leftContent + "</div>" +
+                    "<div class=\"col-2\">" + rightContent + "</div>" +
+                "</div>";
+    }
+
     public static String pageEnd() {
         return "</body></html>";
     }

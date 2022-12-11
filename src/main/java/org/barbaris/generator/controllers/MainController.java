@@ -3,9 +3,7 @@ package org.barbaris.generator.controllers;
 import org.barbaris.generator.models.HtmlTemplates;
 import org.barbaris.generator.models.PageModel;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -29,7 +27,6 @@ public class MainController {
             InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
 
             HttpHeaders headers = new HttpHeaders();
-            System.out.println(file.getAbsolutePath());
             headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getAbsolutePath());
             headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
             headers.add("Pragma", "no-cache");
@@ -49,6 +46,8 @@ public class MainController {
             String headerType = page.header;
             String footerType = page.footer;
             String siteName = page.siteName;
+            String leftContent = page.leftContent;
+            String rightContent = page.rightContent;
 
             String filePath = "/home/gleb/Documents/GeneratedFiles/" + siteName + ".html";
 
@@ -73,6 +72,10 @@ public class MainController {
                     return "error";
                 }
             }
+
+            // -------------------- ТЕКСТ
+
+            FileWriter.writeFile(HtmlTemplates.contentBlock(rightContent, leftContent), filePath);
 
             // -------------------- ФУТЕРЫ
 
