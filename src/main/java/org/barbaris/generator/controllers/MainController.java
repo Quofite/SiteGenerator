@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 
@@ -39,7 +40,7 @@ public class MainController {
     }
 
     @PostMapping("/generate")
-    public String generation(@RequestBody PageModel page) {
+    public String generation(@RequestBody PageModel page, Model model) {
         if (page != null) {
             // генерация файла
 
@@ -64,16 +65,26 @@ public class MainController {
             if(headerType.equals("1")) {
 
                 if(!FileWriter.writeFile(HtmlTemplates.header1(siteName), filePath)) {
+                    model.addAttribute("error_message", "could not add element");
                     return "error";
                 }
             } else if (headerType.equals("2")) {
 
                 if(!FileWriter.writeFile(HtmlTemplates.header2(), filePath)) {
+                    model.addAttribute("error_message", "could not add element");
                     return "error";
                 }
             }
 
-            // -------------------- ТЕКСТ
+            // -------------------- КОНТЕНТ
+
+            if(rightContent == null) {
+                rightContent = "";
+            }
+
+            if(leftContent == null) {
+                leftContent = "";
+            }
 
             FileWriter.writeFile(HtmlTemplates.contentBlock(rightContent, leftContent), filePath);
 
@@ -81,10 +92,12 @@ public class MainController {
 
             if(footerType.equals("1")) {
                 if(!FileWriter.writeFile(HtmlTemplates.footer1(siteName), filePath)) {
+                    model.addAttribute("error_message", "could not add element");
                     return "error";
                 }
             } else if (footerType.equals("2")) {
                 if(!FileWriter.writeFile(HtmlTemplates.footer2(siteName), filePath)) {
+                    model.addAttribute("error_message", "could not add element");
                     return "error";
                 }
             }
@@ -96,7 +109,13 @@ public class MainController {
 
             return "index";
         } else {
+            model.addAttribute("error_message", "page is null");
             return "error";
         }
+    }
+
+    @PostMapping("/image")
+    public void image(@RequestParam("image")MultipartFile file, @RequestParam("site_name") String siteName) {
+
     }
 }

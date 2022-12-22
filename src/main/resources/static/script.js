@@ -85,13 +85,9 @@ document.getElementById("header_1").addEventListener("click", (e) => {
 document.getElementById("header_2").addEventListener("click", (e) => {
     site_name = document.getElementById("header_text").value;
 
-    document.getElementById("header_block").innerHTML = `<header class="d-flex justify-content-center py-3">
+    document.getElementById("header_block").innerHTML = `<header class="d-flex justify-content-center py-3" style="background-color: #D3D3D3;">
     <ul class="nav nav-pills">
-    <li class="nav-item"><a class="nav-link" aria-current="page">Кнопка</a></li>
-    <li class="nav-item"><a class="nav-link">Кнопка))0)</a></li>
-    <li class="nav-item"><a class="nav-link">Кнопка еще</a></li>
-    <li class="nav-item"><a class="nav-link">Кнопка оаоаоаоа</a></li>
-    <li class="nav-item"><a class="nav-link">Knopka</a></li>
+    <li class="nav-item">` + site_name + `</li>
     </ul>
     </header>`;
     header = "2";
